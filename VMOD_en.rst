@@ -1,20 +1,27 @@
+.. contents::
+   :class: handout
+   
+.. raw:: pdf
+
+   PageBreak oneColumn
+
 ﻿
 Contents
 subject ofdocument	2
 
-highly customizableofVarnish	two-line
-basic knowledge necessary when using the C	4
-dump ofVCL	4
-Read the source ofVarnish	7-line
-methodthat perform the variable operation at  C	12
-to use thebuilt-in functions	18-line
-CWhen using external shared libraries	22
-basic knowledge necessary when using theVMOD	24
+#highly customizableofVarnish	two-line
+#basic knowledge necessary when using the C	4
+#dump ofVCL	4
+#Read the source ofVarnish	7-line
+#methodthat perform the variable operation at  C	12
+#to use thebuilt-in functions	18-line
+#CWhen using external shared libraries	22
+#basic knowledge necessary when using theVMOD	24
 (vmod_example)to try using the VMOD ofexternal	24vmod
 you try to add a functionto	vmod_example.vcc
 25(vmod.vcc)vmod_example.	26
 c (vmod.c)	27(varnishtest
-typeof variables availableinVMOD	28
+#typeof variables availableinVMOD	28
 usesession workspace	34
 How to private pointer	36
 to use external shared libraries inVMOD	41
@@ -691,7 +698,10 @@ END
 actualI can confirm that the value is set to.
 Is necessary to be careful when using shared libraries in-line C, it is that there is a need to specify the cc_command even when debugging.
 If you do not specify, you can not perform undefined symbol comes out naturally.
-basic knowledge necessary when using the
+
+Basic Required Knowledge When Using VMODs
+=============================================
+
 Trouble like the following will come out when you try to write code in a large C-lineVMOD.
 -Troubledifficult to line C are mixed in the
 andirregular or use HEADER variable to passread,variable
@@ -700,7 +710,10 @@ I think It depends on the how to write code, and difficult to reuse some code wr
 It is VMOD there comes out.
 VMOD is easy to use and easy to deploy as a module of Nginx and Apache.
 Let's grab the sense to try to put the first VMOD that have been distributed.
+
 (vmod_example) Try using the VMOD
+---------------------------------
+
 Let's use it to download the official vmod_example that Varnish is distributed firstoutside.
 HelloWorld
 This module is simple enough to output the  https://github.com/varnish/libvmod-example.
@@ -735,6 +748,8 @@ in response headers and try to request in this state
 Hello, Worldgranted:hello
 is
 to try to add a function to
+---------------------------
+
 We will look at the structure of the previous vmod_examplevmod.The following is the file tree.
 .
 ─ autogen.sh ├ ─ ─├ ─ ─├ ─ ── ─├ ─ ─├ ─ ── ─├ ─ ─├ ─
@@ -778,7 +793,10 @@ in response headers and try to request this
 is VCL.
 I think it was found that you can add a function very easily.
 It will explain what you actually use more of the following.
-(vmod.vcc)vmod_example.vcc.
+
+(vmod.vcc)vmod_example.vcc
+--------------------------
+
 I define an interface for call from VCL VCL and the compilerVMOD There are three elements in the
 Module	[module name]			indicates the name space of the VMODfollowing.
 Init[function name]				This is the initialization functionofVMOD.
@@ -804,7 +822,10 @@ Function STRING hogehoge (INT, STRING)
 ■no return value
 (INT, STRING)Function VOID hogehoge
 I will later typeof variablevalue.
+
 vmod_example.c (vmod.c)
+-----------------------
+
 The codeof VMOD real.
 You need to include the header of the following means.
 #include
@@ -820,7 +841,10 @@ int(structsess  sp,* {(strlen(p))*const char
 return}
 It depends on variables that receive the second and subsequentarguments;
 I will be discussed later init_function.
+
 typeof variables available in VMOD
+----------------------------------
+
 Types can be used in the  VMODis almost the same as the VCL. But you or there is a special type Ri was part deprecated.
 Return value is of a △ is, it is because the variables that you can write does not exist, useless did not think so much. Also were deprecated is what is listed in the official documentation.
 The commentary to make a simple function whose return value argument, each variable.
@@ -1030,7 +1054,10 @@ thatare described
 PRIV_CALL
 This is a special type that specifies the valid private pointer in the call function ofVMOD later.
 Later.
-use ofsession
+
+Using the Varnish session workspace
+-----------------------------------
+
 TheVarnishworkspace,I have a work space in each session.in the main
 Return value is a stringVMOD,I use it when you need to allocate memory.
 tothe memory leak if you allocate memory from here, it will give you control Varnish
@@ -1070,7 +1097,10 @@ I have 5 bytes commit below. It is rolled back if there is space remaining.
 (sp-> wrk-> ws,WS_Release.5)area;
 I proceed as follows if, to roll back all the temporary
 (Sp-> wrk-> ws,WS_Release;0)
+
 how to usethe private
+---------------------
+
 session workspace ofjustpointer,will be cleared each time a session is started. only once or decompilation of the regular expression, the processing of the high
 For example,what should I do when to callcost,I want to turn to use after that?
 I have what's called private pointer in Varnish.
@@ -1201,6 +1231,8 @@ There is a need to include the following header To take advantage of this.
 
 
 to use external shared libraries inVMOD
+---------------------------------------
+
 The use of shared libraries external VMODis very easy.
 We'll use the libmemcached as you would with a inline C.
 
@@ -1237,7 +1269,10 @@ simple;req.xid),
 You can see as compared to inline C, calls from the VCL's very ".
 In the case of VMOD, do not need to change the cc_command of startup parameters such as set in-line C.
 From this point, I would recommend VMOD When you use external libraries.
+
 that use regular expressions in
+-------------------------------
+
 I wrote during the description of inline CVMOD,to be omitted for regular expression is difficult in nature.
 As a reason, because Varnish performs first compilation of regular expressions, be confusing to imagine the regular expression of the original approximate said, "VGC_re_ [Numeric]" and its name. There is no storage method beyond the session in inline C further, as private pointer. We believe it inappropriate to use fact in order for that, there is no choice but to open immediately performed each time compiled to use a regular expression.
 However, private pointer exist in VMOD. It is possible to turn use the compiled regular expressions for that. Is an example below.
@@ -1283,7 +1318,10 @@ VRT_re_match([evaluation string], [regular expressionpointer])to store a
 	being matched with theregular expression
 (sp, [replacement flag], [evaluation string], VRT_regsubpointer to store the regular expression],thereplacement string])
 	the replacement flag to be replaced in regular expression The first match,replacementall in the case of 1 for
-(varnishtest)How to debugVMOD
+
+How to debug a VMOD using varnishtest
+-------------------------------------
+
 there are several ways to do debuggingVMOD0.The best is to use the varnishtest.
 Definition of vtc in varnishtest normal does not change, but you may not forget only one.
 Perform the import of vmod course in the definition of the VCL, but you must specify the location for vmod doing the test.
@@ -1298,8 +1336,11 @@ alsothe vtc if I put in / src / tests /, even without adding to Makefile.am
 youcan test thatespecially(if)like,which is based on vmod_example
 
 News
+====
 We are planning that it produces a Varnish book early next yearPublishing Co. master from (http://tatsu-zine.com/). I think that is when you notice on Twitter and blog and also when it is close, but Thank you so packed with various things and what you have not written in the interest of time until now.
+
 postscript!
+-----------
 The Nice to meet you lack how it started  It is Iwa-mei chan Iwa-mei marshmallow.
 Following the summer Komi, I made ​​this Varnish. It is billed as inline C · VMOD this time, but I mean if used to like not afraid version up for the purpose of back in to. I am a difficult subject as you know, Varnish to conduct incompatible changes considerably, transition documents in that case also is being honest enhancement. But aboutit then · diff view the source
 changes or you will knowspecific.I am happy if you can grasp the sense to read this book.
