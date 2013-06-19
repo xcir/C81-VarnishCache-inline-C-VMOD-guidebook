@@ -359,7 +359,10 @@ This file please watch on more than inlining C.
 It does not necessarily in-line C course.immediatelyif I look to the origin of these
 I think even if the version is up, and you can grasp files.
 The following describes the function and precautions minimum required in using the inline C actually.
-wayto perform the operation in-line variable
+
+Ways to perform the operation in-line variable
+----------------------------------------------
+
 To read and write variables in VCL (such as req.url) in ainline CC,it is necessary to devise a little bit.
 For each variable, getter / setter are prepared, make the acquisition and set of values ​​using the function. I will explain their own way.
 wayto read to each
@@ -747,6 +750,7 @@ importsub{set
 in response headers and try to request in this state
 Hello, Worldgranted:hello
 is
+
 to try to add a function to
 ---------------------------
 
