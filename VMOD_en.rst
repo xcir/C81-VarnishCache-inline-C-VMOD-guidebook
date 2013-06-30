@@ -464,9 +464,9 @@ Is specified by the constant you want to see where the header in the second argu
 
 
 I specify the field name in the third argument. How to specify in this case care must be taken.
-null character + 2 digitin octal the length of thefield + in :) (endfield name
+	Field Length(1byte) + Field Name(include : char)
 
-specifying the length of the stringespeciallydouble-digit octalIt is important to noteto thatname.
+
 For example, if you specify if you want to access to req.http.X is as follows.
 (Sp,VRT_GetHdr;andHDR_REQ,"\002X:")
 field name that you want to access is a single letter "X", but:real for is added
@@ -515,10 +515,15 @@ VCLresp.http.X		VRT_SetHdr; set= "A" + "B"
 C function name	("\HDR_RESP,,sp,002X:" "A", "B",
 			vrt_magic_string_end);
 until the third argument the same as when reading, the rest is similar to the way of writing of type STRING. String you specify more than one are combined.at thevrt_magic_string_endPlease specify theend.
-In addition, you only need to specify the 0 if you want to delete the field itself.
+In addition, you specify the following: If you want to delete the field itself
 VCL		VRT_SetHdr;remove
-C function name	(,sp,resp.http.X.HDR_RESP,"\0delete;:002X")
-If you want toNot required vrt_magic_string_end
+C function
+	Until 3.0.3 VRT_SetHdr(sp,HDR_RESP,”\002X:”,0);
+	Until 3.0.4 VRT_SetHdr(sp,HDR_RESP,”\002X:”,vrt_magic_string_unset);
+Third argument varies depending on the different versions.
+There even to such a change in the change of revision Varnish.
+Let's put out the code in the first-C If you suddenly stop working.
+
 for struct sess *
 The first argument of the function for reading and writing variablesp,has been designated the "sp" by all means.
 This variable holds the state of the session.
@@ -1358,6 +1363,26 @@ also(no calibration) timing you have finished writing for the time being this is
 It waslast-minute schedulenot horriblycould dropwhat.Descriptions Hasho~tsu drinking tears for the lot, too there (like varnishtest) · · ·.I perform the calibration from now on,
 I thinkwhether there is a point to this is hard to read maybe. Really sorry.
 Then again if the opportunity arises!
+
+Version
+-----------
+v5
+	2013-06-30(JA)
+	Follow Varnish verup(3.0.3 -> 3.0.4)
+v4
+	2012-06-01(JA)
+	3rd argument description VRT_GetHdr/SetHdr
+v3
+	2012-02-15(JA)
+	how to use SessionWS, I forgot to write a use sp->wrk->ws->f
+v2
+	2012-01-26(JA)
+	fix rollback description
+	fix some miss.
+v1
+	2011-12-31(JA)
+	first version
+
 Imprint
 Cache inline-C/VMOD
 Varnishguidebook
