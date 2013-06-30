@@ -1071,12 +1071,12 @@ Butlet's open those you ensure if unnecessary because it is also used in otherra
 State of the area of the workspace there are three.
 
 
-The area, you need to commit or roll back the area always when finished using time. You can make a temporary area for up to one,again without
-it is an error to start the transactionboth.
+The area, you need to commit or roll back the area always when finished using time. You can make a temporary area for up to one, again without both
+It is an error to start the transaction.
 It's time to actually use.
-I will include the necessary first header.
+function you want to use the header that must be include are the following
 #include "bin / varnishd /
-I will ensure the temporary area of the workspace thencache.h".
+Beginning of a transaction(Free space reservation of the workspace)
 ■function
 	(struct ws * ws, unsigned bytes)unsigned WS_Reserve;
 ■argument
@@ -1084,23 +1084,29 @@ I will ensure the temporary area of the workspace thencache.h".
 	unsigned bytes		allremaining specifies the byte you want to  if you specify 0
 ■value return
 	the number of bytes was able to secure
-10 bytes ensure for example10),which is done as follows: If you want to
-u = WS_Reserve (sp-> wrk-> ws,
-(u! = 10){Couldif;
-	not allocate /
-/}
-commit rollback processing areacarried out the processdone.
+
+Commit rollback processing area(To determine the area of use of the workspace)
 ■function
 	(struct ws * ws, unsigned bytes)void WS_Release;
 
 ■argument
 	struct ws * ws		specifiedcommitworkspace,
 	unsigned bytes		numberof bytes
-when this it is possible to rollback and commit remaining part.
-I have 5 bytes commit below. It is rolled back if there is space remaining.
-(sp-> wrk-> ws,WS_Release.5)area;
-I proceed as follows if, to roll back all the temporary
-(Sp-> wrk-> ws,WS_Release;0)
+
+I will write code to ensure 10 bytes as an example.
+If you are unable to 10 bytes secured, it returns NULL by opening.
+
+	u = WS_Reserve(sp->wrk->ws, 0);
+	if(u<10){
+	  WS_Release(sp->wrk->ws,0); //Exit processing can secure area because 10 bytes or less
+	  return NULL;
+	}
+	char * str = (char*)sp->wrk->ws->f; //Specifies a pointer of free space
+	...
+	processing
+	...
+	WS_Release(sp->wrk->ws,10); //10 bytes to commit
+
 
 how to usethe private
 ---------------------
